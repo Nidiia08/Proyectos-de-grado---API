@@ -12,6 +12,15 @@ CREATE TABLE USUARIO (
   nombre VARCHAR(100) NOT NULL,
   apellido VARCHAR(100) NOT NULL,
   correo VARCHAR(150) NOT NULL UNIQUE,
+    tipo_documento VARCHAR(30) NOT NULL DEFAULT 'CEDULA_CIUDADANIA'
+        CHECK (tipo_documento IN (
+            'CEDULA_CIUDADANIA',
+            'TARJETA_IDENTIDAD',
+            'CEDULA_EXTRANJERIA',
+            'PASAPORTE'
+        )),
+    numero_documento VARCHAR(20) NOT NULL UNIQUE,
+    celular VARCHAR(10) NOT NULL,
   "password" VARCHAR(255) NOT NULL,
   activo BOOLEAN DEFAULT TRUE,
   fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -81,16 +90,6 @@ CREATE TABLE PERIODO_ACADEMICO (
 );
 
 -- =========================
--- TABLA GRUPO_INVESTIGACION
--- =========================
-CREATE TABLE GRUPO_INVESTIGACION (
-    id SERIAL PRIMARY KEY,
-    nombre VARCHAR(200) NOT NULL,
-    codigo VARCHAR(50) NOT NULL UNIQUE,
-    director VARCHAR(200) NOT NULL
-);
-
--- =========================
 -- TABLA PROYECTO
 -- =========================
 CREATE TABLE PROYECTO (
@@ -105,7 +104,7 @@ CREATE TABLE PROYECTO (
     fecha_fin_real DATE,
     periodo_academico_id INT NOT NULL,
     asesor_id INT NOT NULL,
-    grupo_investigacion_id INT,
+    coasesor_id INT,
     es_interdisciplinario BOOLEAN DEFAULT FALSE,
     es_grupo BOOLEAN DEFAULT FALSE,
     CONSTRAINT fk_proyecto_periodo
@@ -118,10 +117,10 @@ CREATE TABLE PROYECTO (
         REFERENCES DOCENTE(id)
         ON DELETE RESTRICT
         ON UPDATE CASCADE,
-    CONSTRAINT fk_proyecto_grupo
-        FOREIGN KEY (grupo_investigacion_id)
-        REFERENCES GRUPO_INVESTIGACION(id)
-        ON DELETE SET NULL
+    CONSTRAINT fk_proyecto_coasesor
+        FOREIGN KEY (coasesor_id)
+        REFERENCES DOCENTE(id)
+        ON DELETE RESTRICT
         ON UPDATE CASCADE
 );
 

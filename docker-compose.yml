@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: proyectosdegrado_api
+    container_name: api_proyectosdegrado_api
     env_file:
       - .env
     environment:
@@ -17,7 +17,7 @@ services:
 
   db:
     image: postgres:16
-    container_name: proyectosdegrado_postgres
+    container_name: api_proyectosdegrado_postgres
     env_file:
       - .env
     environment:
@@ -39,7 +39,7 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4:8.14
-    container_name: proyectosdegrado_pgadmin
+    container_name: api_proyectosdegrado_pgadmin
     env_file:
       - .env
     environment:

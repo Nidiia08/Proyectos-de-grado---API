@@ -35,9 +35,22 @@ class CustomUserManager(BaseUserManager):
 class Usuario(AbstractBaseUser, PermissionsMixin):
     """Representa un usuario base del sistema."""
 
+    class TipoDocumento(models.TextChoices):
+        CEDULA_CIUDADANIA = "CEDULA_CIUDADANIA", "Cédula de Ciudadanía"
+        TARJETA_IDENTIDAD = "TARJETA_IDENTIDAD", "Tarjeta de Identidad"
+        CEDULA_EXTRANJERIA = "CEDULA_EXTRANJERIA", "Cédula de Extranjería"
+        PASAPORTE = "PASAPORTE", "Pasaporte"
+
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
     correo = models.CharField(unique=True, max_length=150)
+    tipo_documento = models.CharField(
+        max_length=30,
+        choices=TipoDocumento.choices,
+        default=TipoDocumento.CEDULA_CIUDADANIA,
+    )
+    numero_documento = models.CharField(unique=True, max_length=20)
+    celular = models.CharField(max_length=10)
     password = models.CharField(max_length=255)
     activo = models.BooleanField(default=True)
     fecha_registro = models.DateTimeField(default=timezone.now)
@@ -89,7 +102,7 @@ class UsuarioRol(models.Model):
 
     class Meta:
         managed = True
-        db_table = "USUARIO_ROL"
+        db_table = "usuario_rol"
         unique_together = ("usuario", "rol")
 
     def __str__(self):

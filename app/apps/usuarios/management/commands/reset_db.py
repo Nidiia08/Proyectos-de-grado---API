@@ -30,7 +30,6 @@ class Command(BaseCommand):
         "ACUERDO",
         "PROYECTO_ESTUDIANTE",
         "PROYECTO",
-        "GRUPO_INVESTIGACION",
         "PERIODO_ACADEMICO",
         "DOCENTE",
         "ESTUDIANTE",
@@ -65,7 +64,16 @@ class Command(BaseCommand):
                 cursor.execute(f"DROP TABLE IF EXISTS {tabla} CASCADE;")
 
         self.stdout.write("Base de datos limpiada exitosamente")
-        call_command("migrate")
-        self.stdout.write("Migraciones ejecutadas exitosamente")
+        # `usuarios.Usuario` usa `PermissionsMixin`, asi que necesitamos las
+        # tablas de `contenttypes` y `auth` antes de sincronizar las apps
+        # locales. Luego, con `usuario` ya creado, aplicamos las migraciones
+        # que dependen del AUTH_USER_MODEL, como `admin` y `token_blacklist`.
+        call_command("migrate", "contenttypes", interactive=False)
+        call_command("migrate", "auth", interactive=False)
+        call_command("migrate", run_syncdb=True, interactive=False)
+        call_command("migrate", "admin", interactive=False)
+        call_command("migrate", "sessions", interactive=False)
+        call_command("migrate", "token_blacklist", interactive=False)
+        self.stdout.write("Migraciones y sincronizacion de tablas ejecutadas exitosamente")
         call_command("crear_comite")
         self.stdout.write("Base de datos lista para usar")

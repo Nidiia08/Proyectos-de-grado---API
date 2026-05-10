@@ -28,6 +28,9 @@ class Command(BaseCommand):
             password=make_password(password),
             nombre=nombre,
             apellido=apellido,
+            tipo_documento="CEDULA_CIUDADANIA",
+            numero_documento="0000000001",
+            celular="3000000001",
             activo=True,
             is_superuser=True,
         )

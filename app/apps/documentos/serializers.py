@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from .models import DocumentoCulminacion, DocumentoInscripcion, Plantilla
+from apps.plantillas.models import Plantilla
+from .models import DocumentoCulminacion, DocumentoInscripcion
 
 
 class DocumentoInscripcionSerializer(serializers.ModelSerializer):

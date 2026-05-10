@@ -1,6 +1,7 @@
 from django.db import transaction
 
-from .models import DocumentoCulminacion, DocumentoInscripcion, Plantilla
+from apps.plantillas.models import Plantilla
+from .models import DocumentoCulminacion, DocumentoInscripcion
 
 
 @transaction.atomic

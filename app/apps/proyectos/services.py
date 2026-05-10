@@ -13,7 +13,7 @@ from apps.notificaciones.services import crear_notificacion
 from apps.seguimiento.models import HistorialAccion
 from apps.usuarios.permissions import tiene_rol
 
-from .models import Proyecto
+from .models import Proyecto, ProyectoEstudiante
 
 ORDEN_FASES = [
     Proyecto.FaseActual.INSCRIPCION,
@@ -39,7 +39,19 @@ def registrar_historial(proyecto, usuario, accion, descripcion, fase=None):
 @transaction.atomic
 def crear_proyecto(datos, creado_por):
     """Crea un proyecto y sus cinco fases iniciales."""
+    estudiantes = datos.pop("estudiantes", [])
+    datos.setdefault("estado", Proyecto.Estado.ACTIVO)
+    datos.setdefault("fase_actual", Proyecto.FaseActual.INSCRIPCION)
+
     proyecto = Proyecto.objects.create(**datos)
+
+    for estudiante in estudiantes:
+        ProyectoEstudiante.objects.get_or_create(
+            proyecto=proyecto,
+            estudiante_id=estudiante["estudiante_id"],
+            defaults={"es_autor_principal": estudiante.get("es_autor_principal", False)},
+        )
+
     FaseInscripcion.objects.create(proyecto=proyecto, estado=EstadoFase.PENDIENTE)
     FaseAprobacion.objects.create(proyecto=proyecto, estado=EstadoFase.PENDIENTE, max_iteraciones=3)
     FaseDesarrollo.objects.create(proyecto=proyecto, estado=EstadoFase.PENDIENTE)

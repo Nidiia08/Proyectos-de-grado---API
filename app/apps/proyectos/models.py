@@ -17,21 +17,6 @@ class PeriodoAcademico(models.Model):
         return self.nombre
 
 
-class GrupoInvestigacion(models.Model):
-    """Representa un grupo de investigacion institucional."""
-
-    nombre = models.CharField(max_length=200)
-    codigo = models.CharField(unique=True, max_length=50)
-    director = models.CharField(max_length=200)
-
-    class Meta:
-        managed = True
-        db_table = "grupo_investigacion"
-
-    def __str__(self):
-        return f"{self.codigo} - {self.nombre}"
-
-
 class Proyecto(models.Model):
     """Modelo principal para la gestion de trabajos de grado."""
 
@@ -67,12 +52,7 @@ class Proyecto(models.Model):
     fecha_fin_real = models.DateField(blank=True, null=True)
     periodo_academico = models.ForeignKey("proyectos.PeriodoAcademico", models.DO_NOTHING)
     asesor = models.ForeignKey("usuarios.Docente", models.DO_NOTHING)
-    grupo_investigacion = models.ForeignKey(
-        "proyectos.GrupoInvestigacion",
-        models.DO_NOTHING,
-        blank=True,
-        null=True,
-    )
+    coasesor = models.ForeignKey("usuarios.Docente", models.DO_NOTHING, blank=True, null=True, related_name="proyectos_coasesor")
     es_interdisciplinario = models.BooleanField(blank=True, null=True)
     es_grupo = models.BooleanField(blank=True, null=True)
 

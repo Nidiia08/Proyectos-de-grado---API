@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import GrupoInvestigacion, PeriodoAcademico, Proyecto, ProyectoEstudiante
+from .models import PeriodoAcademico, Proyecto, ProyectoEstudiante
 
 
 @admin.register(PeriodoAcademico)
@@ -9,13 +9,6 @@ class PeriodoAcademicoAdmin(admin.ModelAdmin):
     list_filter = ("activo",)
     search_fields = ("nombre",)
     ordering = ("-fecha_inicio",)
-
-
-@admin.register(GrupoInvestigacion)
-class GrupoInvestigacionAdmin(admin.ModelAdmin):
-    list_display = ("id", "codigo", "nombre", "director")
-    search_fields = ("codigo", "nombre", "director")
-    ordering = ("codigo",)
 
 
 @admin.register(Proyecto)

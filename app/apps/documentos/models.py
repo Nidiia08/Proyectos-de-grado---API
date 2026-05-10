@@ -43,20 +43,3 @@ class DocumentoCulminacion(models.Model):
         return self.nombre_documento
 
 
-class Plantilla(models.Model):
-    """Plantillas oficiales para cada fase y modalidad."""
-
-    nombre = models.CharField(max_length=200)
-    categoria = models.CharField(max_length=100)
-    fase = models.CharField(max_length=30)
-    modalidad_aplica = models.CharField(max_length=30, blank=True, null=True)
-    archivo_url = models.CharField(max_length=500)
-    fecha_actualizacion = models.DateTimeField(blank=True, null=True)
-    subida_por = models.ForeignKey("usuarios.Usuario", models.DO_NOTHING, db_column="subida_por")
-
-    class Meta:
-        managed = True
-        db_table = "plantilla"
-
-    def __str__(self):
-        return self.nombre

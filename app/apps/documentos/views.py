@@ -3,9 +3,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from apps.plantillas.models import Plantilla
 from apps.usuarios.permissions import tiene_rol
 
-from .models import DocumentoCulminacion, DocumentoInscripcion, Plantilla
+from .models import DocumentoCulminacion, DocumentoInscripcion
 from .serializers import DocumentoCulminacionSerializer, DocumentoInscripcionSerializer, PlantillaSerializer
 from .services import actualizar_documento, crear_documento_culminacion, crear_documento_inscripcion
 

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import DocumentoCulminacion, DocumentoInscripcion, Plantilla
+from .models import DocumentoCulminacion, DocumentoInscripcion
 
 
 @admin.register(DocumentoInscripcion)
@@ -18,10 +18,3 @@ class DocumentoCulminacionAdmin(admin.ModelAdmin):
     search_fields = ("nombre_documento", "tipo_documento")
     ordering = ("-fecha_carga",)
 
-
-@admin.register(Plantilla)
-class PlantillaAdmin(admin.ModelAdmin):
-    list_display = ("id", "nombre", "categoria", "fase", "fecha_actualizacion")
-    list_filter = ("fase", "categoria")
-    search_fields = ("nombre", "categoria")
-    ordering = ("-fecha_actualizacion",)
